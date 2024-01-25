@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>GLB Tester</title>
+    <script src="../dist/mr.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+    <div id="drop-zone">
+        <div id="instructions">
+            <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+            </svg>
+            <p>Drop a <b>.glb</b> file here or click to select.</p>
+            <div>
+                <p><small>Nothing will get uploaded.</small></p>
+            </div>
+        </div>
+        <input id="input-element" type="file" name="myFile" style="display: none;">
+    </div>
+    <div id="process-zone"></div>
+
+    <script type="module">
+        const dropZoneElement = document.querySelector("#drop-zone");
+        const processZoneElement = document.querySelector("#process-zone");
+        const inputElement = document.querySelector("#input-element");
+
+        dropZoneElement.onclick = (e) => {
+            inputElement.click();
+        };
+
+        inputElement.onchange = (e) => {
+            if (inputElement.files.length) {
+                convertInput(inputElement.files[0]);
+            }
+        };
+
+        dropZoneElement.ondragover = dropZoneElement.ondragenter = (e) => {
+            e.preventDefault();
+            dropZoneElement.classList.add("drag-over");
+        };
+
+        dropZoneElement.ondragleave = dropZoneElement.ondragend = (e) => {
+            e.preventDefault();
+            dropZoneElement.classList.remove("drag-over");
+        };
+
+        dropZoneElement.ondrop = (e) => {
+            e.preventDefault();
+
+            if (e.dataTransfer.items) {
+                // Use DataTransferItemList interface to access the file(s)
+                [...e.dataTransfer.items].forEach((item, i) => {
+                    if (item.kind === "file") {
+                        const file = item.getAsFile();
+                        convertInput(file);
+                    }
+                });
+            } else {
+                // Use DataTransfer interface to access the file(s)
+                [...e.dataTransfer.files].forEach((file, i) => {
+                    if (i == 0) {
+                        convertInput(file);
+                    }
+                });
+            }
+
+            dropZoneElement.classList.remove("drag-over");
+        };
+
+        async function convertInput(file) {
+
+            var fileExtension = file.name.split('.').pop().toLowerCase();
+            console.log('File type:', file.type);
+            console.log('File extension:', fileExtension);
+            console.log('File object:', file);
+
+            if (fileExtension == "glb") {
+
+                dropZoneElement.style.display = "none";
+                processZoneElement.style.display = "flex";
+
+                const app = document.createElement("mr-app");
+                app.debug = "true"
+                processZoneElement.append(app);
+
+                const model = document.createElement("mr-model");
+
+                const fileURL = URL.createObjectURL(file);
+                model.setAttribute("src", fileURL);
+                model.object3D.visible = false;
+
+                app.append(model);
+
+                model.onload = () => URL.revokeObjectURL(fileURL);
+
+            } else {
+                alert("Whoops, this is not a GLB file (.glb)")
+            }
+        }
+
+    </script>
+</body>
+
+</html>
