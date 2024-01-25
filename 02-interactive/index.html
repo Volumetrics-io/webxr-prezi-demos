@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>02 interactive</title>
+    <script src="../dist/mr.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+    <!-- <mr-app debug="true"> -->
+    <mr-app>
+        <mr-light color="blue" intensity="2" data-position="0 0 0.2"></mr-light>
+        <mr-light color="white" intensity="2" data-position="0 0.5 0.5"></mr-light>
+        <mr-panel class="stack">
+            <mr-div class="nav">
+                <mr-img class="logo-image" src="./assets/mrjs_logo.png" alt="The MRJS logo"></mr-img>
+                <mr-button style="margin-left: auto;" onclick="App.prev()">Previous</mr-button>
+                <mr-button style="margin-left: 10px" onclick="App.next()">Next</mr-button>
+            </mr-div>
+
+            <mr-div class="illustration">
+                <mr-div id="models" style="z-index: 100"></mr-div>
+            </mr-div>
+
+            <mr-div class="information">
+                <mr-text id="name">loading</mr-text>
+                <mr-text id="desc">loading</mr-text>
+            </mr-div>
+
+        </mr-panel>
+    </mr-app>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
