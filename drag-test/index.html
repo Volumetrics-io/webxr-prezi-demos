@@ -86,15 +86,13 @@
                 processZoneElement.style.display = "flex";
 
                 const app = document.createElement("mr-app");
-                app.debug = "true"
+                app.setAttribute("debug", true);
                 processZoneElement.append(app);
 
                 const model = document.createElement("mr-model");
-
-                const fileURL = URL.createObjectURL(file);
-                model.setAttribute("src", fileURL);
-                model.object3D.visible = false;
-
+                const blob = URL.createObjectURL(file);
+                // const newfile = new File([blob], "filename.glb", { type: "model/gltf-binary" });
+                model.setAttribute("src", blob);
                 app.append(model);
 
                 model.onload = () => URL.revokeObjectURL(fileURL);

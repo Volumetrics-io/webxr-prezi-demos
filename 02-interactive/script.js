@@ -1,15 +1,20 @@
 var __appState = {
+    selected: 0,
+    debugToggle: false,
+    isLogoAnimating: false,
     fishes: [
         {
             name: "Koi fish",
-            model: 'koifish.glb',
+            order: "Cypriniformes",
+            model: 'koifish_anim_rght2.glb',
             scale: 0.05,
             rotation: "0 0 0",
             position: "0 -0.02 0",
             desc: "Koi fish are colored varieties of the common carp. Koi or more specifically nishikigoi are kept for decorative purposes in outdoor koi ponds or water gardens in Japan. Major colors of Koi fish are white, black, red, orange, yellow, blue, brown and cream."
         },
         {
-            name: " Hammerhead Shark",
+            name: "Hammerhead Shark",
+            order: "Carcharhiniformes",
             model: 'great_hammerhead_shark.glb',
             scale: 0.15,
             rotation: "0 90 0",
@@ -18,14 +23,14 @@ var __appState = {
         },
         {
             name: "Blue Whale",
+            order: "Artiodactyla",
             model: 'blue_whale.glb',
             scale: 0.0005,
             rotation: "0 90 360",
-            position: "0 -0.01 0",
+            position: "0 -0.05 0",
             desc: "The Blue Whale (Balaenoptera musculus) is a marine mammal and a baleen whale. It is the largest animal known ever to have existed. The blue whale's long and slender body can be of various shades of greyish-blue dorsally and somewhat lighter underneath."
         }
     ],
-    selected: 0,
     next: function () {
         if (this.selected < this.fishes.length - 1) {
             this.selected++
@@ -40,6 +45,7 @@ var __appState = {
         let selectedFish = this.fishes[this.selected];
 
         document.querySelector("#name").innerText = selectedFish.name;
+        document.querySelector("#order").innerText = selectedFish.order;
         document.querySelector("#desc").innerText = selectedFish.desc;
 
         let childArray = Array.from(document.querySelector("#models").childNodes);
@@ -53,7 +59,33 @@ var __appState = {
                 child.object3D.visible = false;
             }
         });
+    },
+    spinLogo: function () {
+
+        if(this.isLogoAnimating) {
+            clearInterval(this.spinAnimaton);
+            this.isLogoAnimating = false;
+            document.querySelector("#mrjs-logo").dataset.rotation = "0 0 0";
+        } else {
+            this.logoAngle = 0;
+            this.spinAnimaton = setInterval(() => {
+                this.logoAngle += 0.03;
+                document.querySelector("#mrjs-logo").dataset.rotation = `${Math.cos(this.logoAngle) * 360} 0 0`;
+            }, 16)
+            this.isLogoAnimating = true;
+        }
     }
+    // toggleDebug: function() {
+    //     if(this.debugToggle) {
+    //         document.querySelector("mr-app").removeAttribute("debug");
+    //         this.debugToggle = false;
+    //     } else {
+    //         document.querySelector("mr-app").setAttribute("debug", true);
+    //         this.debugToggle = true;
+    //     }
+    //     console.log(document.querySelector("mr-app"))
+    //     console.log(this.debugToggle)
+    // }
 }
 
 // Magic reactivity

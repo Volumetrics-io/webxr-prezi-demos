@@ -4,12 +4,6 @@
     font-weight: 400;
 }
 
-/* @font-face {
-    font-family: 'Onest';
-    src: url('/02-interactive/assets/Onest-Bold.ttf') format('truetype');
-    font-weight: 700;
-} */
-
 @font-face {
     font-family: 'Bricolage';
     src: url('/02-interactive/assets/BricolageGrotesque.ttf') format('truetype');
@@ -20,10 +14,6 @@
     --font-head: "Bricolage";
     --font-body: "Onest";
 }
-
-/* body {
-    font-family: var(--font-family);
-} */
 
 mr-app {
     line-height: 100%;
@@ -37,15 +27,14 @@ mr-app {
     position: fixed;
     display: flex;
     flex-direction: row;
-    top: var(--space-around);
+    bottom: var(--space-around);
     left: var(--space-around);
     width: calc(100% - var(--space-around) - var(--space-around));
     height: var(--height);
     background-color: #181818;
     align-items: center;
     justify-content: center;
-    /* padding-right: 20px; */
-    padding: 0px 20px 0px 0px;
+    padding: 0px 20px;
     border-radius: 16px;
     z-index: 2;
 }
@@ -55,7 +44,13 @@ mr-app {
     flex-flow: column nowrap;
     align-items: center;
     gap: 20px;
-    padding-top: 112px;
+    padding: 0 30px;
+}
+
+.tight-stack {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 0;
 }
 
 .illustration {
@@ -64,7 +59,7 @@ mr-app {
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 300px;
+    height: 400px;
 }
 
 .information {
@@ -72,29 +67,15 @@ mr-app {
     flex-direction: column;
     align-items: start;
     justify-content: start;
-    /*     text-align: start; */
     gap: 20px;
-    /* font-weight: 100; */
     letter-spacing: 1px;
     line-height: 1.5;
-    /* font-size: 18px; */
-    /* padding: 40px; */
     max-width: 500px;
-    /* height: calc(100vh - 112px); */
 }
 
-.logo-image {
-    display: block;
-    width: 144px;
-    height: 72px;
-}
-
-.hero-image {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 32px;
+#mrjs-logo {
+    scale: 0.04;
+    z-index: 10;
 }
 
 #name {
@@ -103,10 +84,17 @@ mr-app {
     font-weight: 700;
 }
 
+#order {
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 400;
+    font-style: italic;
+}
+
 #desc {
     font-family: var(--font-body);
     font-size: 18px;
-    font-weight: 100;
+    font-weight: 400;
 }
 
 mr-button {
