@@ -13,6 +13,9 @@
 :root {
     --font-head: "Bricolage";
     --font-body: "Onest";
+
+    --space-around: 20px;
+    --height: 72px;
 }
 
 mr-app {
@@ -22,12 +25,10 @@ mr-app {
 }
 
 .nav {
-    --space-around: 20px;
-    --height: 72px;
     position: fixed;
     display: flex;
     flex-direction: row;
-    bottom: var(--space-around);
+    top: var(--space-around);
     left: var(--space-around);
     width: calc(100% - var(--space-around) - var(--space-around));
     height: var(--height);
@@ -39,30 +40,21 @@ mr-app {
     z-index: 2;
 }
 
-.stack {
+mr-panel {
     display: flex;
     flex-flow: column nowrap;
-    align-items: center;
+    align-items: start;
     gap: 20px;
-    padding: 0 30px;
+    padding: calc(var(--height) + var(--space-around) * 2) 30px;
 }
 
-.tight-stack {
+.stack {
     display: flex;
     flex-flow: column nowrap;
     gap: 0;
 }
 
-.illustration {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 300px;
-}
-
-.information {
+.section {
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -71,6 +63,14 @@ mr-app {
     letter-spacing: 1px;
     line-height: 1.5;
     max-width: 520px;
+    height: 100%;
+}
+
+.diptych {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
 }
 
 #mrjs-logo {

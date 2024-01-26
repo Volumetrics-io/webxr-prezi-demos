@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>98 mrjs</title>
+    <script src="../dist/mr.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+    <mr-app debug="true">
+    <!-- <mr-app> -->
+        <!-- <mr-light color="blue" intensity="2" data-position="0 0 0.5"></mr-light> -->
+        <!-- <mr-light color="orange" intensity="1" data-position="0 1 0.5"></mr-light> -->
+        <mr-panel>
+
+            <mr-div class="nav">
+                <mr-div style="height: 72px; width: 144px;">
+                    <mr-model style="scale: 0.04; z-index: 10;" src="./assets/mrjs_logo.glb"></mr-model>
+                </mr-div>
+                <mr-button style="margin-left: auto;" onclick="console.log('open repo')">See on GitHub</mr-button>
+            </mr-div>
+
+            <mr-div class="section">
+                <mr-div class="stack">
+                    <mr-text>mrjs</mr-text>
+                    <mr-text>A spatial UI library</mr-text>
+                </mr-div>
+                <mr-text>loading</mr-text>
+            </mr-div>
+
+            <mr-div class="diptych">
+                <mr-div class="section">
+                    <mr-text>left</mr-text>
+                </mr-div>
+                <mr-div class="section">
+                    <mr-text>right</mr-text>
+                </mr-div>
+            </mr-div>
+
+        </mr-panel>
+    </mr-app>
+</body>
+
+</html>
