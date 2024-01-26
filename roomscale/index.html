@@ -18,7 +18,7 @@
                 <mr-div style="height: 72px; width: 144px;" onclick="App.spinLogo()">
                     <mr-model id="mrjs-logo" src="./assets/mrjs_logo.glb"></mr-model>
                 </mr-div>
-                <mr-button style="margin-left: auto;" onclick="launchTableTopExperience()">MR</mr-button>
+                <mr-button style="margin-left: auto;" onclick="toggleMR()">MR</mr-button>
                 <mr-button style="margin-left: 10px;" onclick="App.prev()">◁</mr-button>
                 <mr-button style="margin-left: 10px" onclick="App.next()">▷</mr-button>
             </mr-div>
@@ -42,7 +42,7 @@
             <mr-water id="aquarium"></mr-water>
             <mr-model 
                     data-position="0 0.25 0"
-                    style="scale: 1" src="./assets/whale_anim_centered.glb">
+                    style="scale: 2" src="./assets/whale_anim_centered.glb">
             </mr-model>
 
         </mr-entity>
@@ -56,7 +56,7 @@
 
     wall.object3D.visible = false
 
-    function launchTableTopExperience() {
+    function toggleMR() {
         wall.object3D.visible = !whale.object3D.visible
         wall.components.set('anchor', {occlusion: !wall.object3D.visible})
     }
@@ -87,7 +87,6 @@
         });
 
         this.water.material.clipping = true;
-        this.water.position.y = 0.3;
         this.object3D.add(this.water);
 
     }
@@ -108,6 +107,10 @@ customElements.get('mr-water') || customElements.define('mr-water', MRWater);
             let depth = e.target.plane.dimensions.z
             aquarium.water.geometry.copy(new THREE.PlaneGeometry(width, depth))
         }
+    })
+
+    document.addEventListener('exitXR', (e) => {
+        toggleMR()
     })
 
 

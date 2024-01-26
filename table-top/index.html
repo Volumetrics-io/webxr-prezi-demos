@@ -12,7 +12,7 @@
     <mr-app debug="false">
         <mr-light color="blue" intensity="2" data-position="0 0 0.5"></mr-light>
         <mr-light color="orange" intensity="1" data-position="0 1 0.5"></mr-light>
-        <mr-panel class="stack">
+        <!-- <mr-panel class="stack" data-comp-anchor="type: fixed;">
 
             <mr-div class="nav">
                 <mr-div style="height: 72px; width: 144px;" onclick="App.spinLogo()">
@@ -21,18 +21,11 @@
                 <mr-button style="margin-left: auto;" onclick="launchTableTopExperience()">MR</mr-button>
                 <mr-button style="margin-left: 10px;" onclick="App.prev()">◁</mr-button>
                 <mr-button style="margin-left: 10px" onclick="App.next()">▷</mr-button>
-                <!-- <mr-button style="margin-left: 10px" onclick="App.toggleDebug()">Debug</mr-button> -->
             </mr-div>
 
             <mr-div class="illustration">
                 <mr-div id="models" style="z-index: 100"></mr-div>
             </mr-div>
-
-            <!-- <mr-div>
-                <mr-model src="./assets/whale.glb"
-                    position="0 -0.1 0"
-                    rotation="-90 0 0"></mr-model>
-            </mr-div> -->
 
             <mr-div class="information">
                 <mr-div class="tight-stack">
@@ -42,7 +35,7 @@
                 <mr-text id="desc">loading</mr-text>
             </mr-div>
 
-        </mr-panel>
+        </mr-panel> -->
 
             <mr-volume id="whale" data-comp-anchor="type: plane; label: table;">
                 <mr-aquarium id="aquarium"></mr-aquarium>
@@ -58,7 +51,7 @@
     let whale = document.getElementById('whale')
     let xrButton = document.getElementById('xr-button')
 
-    whale.object3D.visible = false
+    // whale.object3D.visible = false
 
     function launchTableTopExperience() {
         whale.object3D.visible = !whale.object3D.visible
@@ -79,12 +72,12 @@
             };
 
             const geometry = new THREE.BoxGeometry(0.9, 0.9, 0.9);
-            const material = new THREE.MeshStandardMaterial({color: 0x00ccff, transparent: true, opacity: 0.5})
+            const material = new THREE.MeshStandardMaterial({color: 0x00ccff, side: 2, transparent: true, opacity: 0.2, metalness: 1})
             this.mesh = new THREE.Mesh(geometry, material)
 
             this.object3D.add(this.mesh)
             
-            // this.mesh.material.clipping = true;
+            this.mesh.material.clipping = true;
 
         }
 }
