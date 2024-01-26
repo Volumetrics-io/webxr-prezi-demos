@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>2D responsive demo</title>
+    <script src="../dist/mr.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+    <mr-app debug="false">
+        <mr-light color="blue" intensity="2" data-position="0 0 0.5"></mr-light>
+        <mr-light color="orange" intensity="1" data-position="0 1 0.5"></mr-light>
+        <mr-panel class="stack" data-comp-anchor="type: fixed;">
+
+            <mr-div class="nav">
+                <mr-div style="height: 72px; width: 144px;" onclick="App.spinLogo()">
+                    <mr-model id="mrjs-logo" src="./assets/mrjs_logo.glb"></mr-model>
+                </mr-div>
+                <mr-button style="margin-left: auto;" onclick="launchTableTopExperience()">MR</mr-button>
+                <mr-button style="margin-left: 10px;" onclick="App.prev()">◁</mr-button>
+                <mr-button style="margin-left: 10px" onclick="App.next()">▷</mr-button>
+            </mr-div>
+
+            <mr-div class="illustration">
+                <mr-div id="models" style="z-index: 100"></mr-div>
+            </mr-div>
+
+            <mr-div class="information">
+                <mr-div class="tight-stack">
+                    <mr-text id="name">loading</mr-text>
+                    <mr-text id="order">loading</mr-text>
+                </mr-div>
+                <mr-text id="desc">loading</mr-text>
+            </mr-div>
+
+        </mr-panel>
+
+        <mr-entity id="wall" data-comp-anchor="type: plane; label: wall; ">
+            <mr-skybox src="./assets/ocean.png"></mr-skybox>
+            <mr-water id="aquarium"></mr-water>
+            <mr-model 
+                    data-position="0 0.25 0"
+                    style="scale: 1" src="./assets/whale_anim_centered.glb">
+            </mr-model>
+
+        </mr-entity>
+
+    </mr-app>
+</body>
+
+<script defer>
+    let whale = document.getElementById('wall')
+    let xrButton = document.getElementById('xr-button')
+
+    wall.object3D.visible = false
+
+    function launchTableTopExperience() {
+        wall.object3D.visible = !whale.object3D.visible
+        wall.components.set('anchor', {occlusion: !wall.object3D.visible})
+    }
+
+    /*********** begin: mr-water entity ***********/
+
+    class MRWater extends MREntity {
+
+    constructor() {
+        super()
+
+        const params = {
+            color: '#00ccff',
+            scale: 0.25,
+            flowX: 0.5,
+            flowY: 0.5
+        };
+
+        const waterGeometry = new THREE.PlaneGeometry(0.9, 0.9);
+        this.water = new Water(waterGeometry, {
+            color: params.color,
+            scale: params.scale,
+            flowDirection: new THREE.Vector2( params.flowX, params.flowY ),
+            normalMap0: new THREE.TextureLoader().load('./assets/Water_1_M_Normal.jpg'),
+            normalMap1: new THREE.TextureLoader().load('./assets/Water_2_M_Normal.jpg'),
+            textureWidth: 1024,
+            textureHeight: 1024
+        });
+
+        this.water.material.clipping = true;
+        this.water.position.y = 0.3;
+        this.object3D.add(this.water);
+
+    }
+}
+
+customElements.get('mr-water') || customElements.define('mr-water', MRWater);
+
+
+/*********** end: mr-water entity ***********/
+
+
+    let aquarium = document.getElementById('aquarium')
+
+    document.addEventListener('anchored', (e) => {
+
+        if (e.target == aquarium.parentElement && e.target.plane) {
+            let width = e.target.plane.dimensions.x
+            let depth = e.target.plane.dimensions.z
+            aquarium.water.geometry.copy(new THREE.PlaneGeometry(width, depth))
+        }
+    })
+
+
+</script>
+<script src="script.js"></script>
+
+
+</html>
