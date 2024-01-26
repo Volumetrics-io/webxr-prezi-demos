@@ -6,7 +6,7 @@ var __appState = {
         {
             name: "Koi fish",
             order: "Cypriniformes",
-            model: 'koifish_anim_rght2.glb',
+            model: 'koifish.glb',
             scale: 0.05,
             rotation: "0 0 0",
             position: "0 -0.02 0",
