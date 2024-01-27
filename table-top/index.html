@@ -92,14 +92,6 @@ customElements.get('mr-aquarium') || customElements.define('mr-aquarium', MRAqua
     function toggleMR() {
         if(!mrjsUtils.xr.isPresenting) { return }
         volume.object3D.visible = !volume.object3D.visible
-        if(volume.object3D.visible) {
-            let y = volume.plane.dimensions.x < volume.plane.dimensions.z ? volume.plane.dimensions.x : volume.plane.dimensions.z
-            y -= 0.2
-            panel.object3D.position.setY(y)
-        } else {
-            panel.object3D.position.copy(new THREE.Vector3(0,0,0))
-            panel.object3D.quaternion.copy(new THREE.Quaternion(0,0,0,1))
-        }
     }
 
     let aquarium = document.getElementById('aquarium')
@@ -117,9 +109,6 @@ customElements.get('mr-aquarium') || customElements.define('mr-aquarium', MRAqua
 
     document.addEventListener('exitXR', (e) => {
         volume.object3D.visible = false
-        panel.object3D.position.copy(new THREE.Vector3(0,0,0))
-        panel.object3D.quaternion.copy(new THREE.Quaternion(0,0,0,1))
-
     })
 
 </script>
