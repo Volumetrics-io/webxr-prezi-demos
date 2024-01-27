@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>2D responsive demo</title>
+    <title>04 roomscale</title>
     <script src="../dist/mr.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
@@ -40,25 +40,16 @@
 
         <mr-entity id="wall" data-comp-anchor="type: plane; label: wall; ">
             <mr-water id="water"></mr-water>
-            <mr-model 
-                    data-position="0 0 -15"
-                    src="./assets/hammerhead/hammerhead_circle_swim1.glb">
+            <mr-model data-position="0 0 -15" src="./assets/hammerhead/hammerhead_circle_swim1.glb">
             </mr-model>
 
-            <mr-model 
-                    data-position="0 0 -0.5"
-                    style="scale: 0.05" 
-                    src="./assets/koi/koifish.glb">
+            <mr-model data-position="0 0 -0.5" style="scale: 0.05" src="./assets/koi/koifish.glb">
             </mr-model>
         </mr-entity>
 
         <mr-entity id="ceiling" data-comp-anchor="type: plane; label: ceiling;">
-            <mr-skybox 
-            data-rotation="90 0 0"
-            src="./assets/ocean.png"></mr-skybox>
-            <mr-model 
-                data-position="0 -0.5 0"
-                src="./assets/whales/whale_circle_2.glb">
+            <mr-skybox data-rotation="90 0 0" src="./assets/ocean.png"></mr-skybox>
+            <mr-model data-position="0 -0.5 0" src="./assets/whales/whale_circle_2.glb">
             </mr-model>
         </mr-entity>
 
@@ -71,7 +62,6 @@
 </body>
 
 <script>
-
     /*********** begin: mr-aquarium entity ***********/
 
     class MRAquarium extends MREntity {
@@ -87,58 +77,64 @@
             };
 
             const geometry = new THREE.BoxGeometry(0.99, 0.99, 0.99);
-            const material = new THREE.MeshPhongMaterial({color: '#0235ff', side: 2, transparent: true, opacity: 0.2, specular: '#7989c4'})
+            const material = new THREE.MeshPhongMaterial({
+                color: '#0235ff',
+                side: 2,
+                transparent: true,
+                opacity: 0.2,
+                specular: '#7989c4'
+            })
             this.mesh = new THREE.Mesh(geometry, material)
 
             this.object3D.add(this.mesh)
-            
+
             this.mesh.material.clipping = true;
 
         }
     }
 
-customElements.get('mr-aquarium') || customElements.define('mr-aquarium', MRAquarium);
+    customElements.get('mr-aquarium') || customElements.define('mr-aquarium', MRAquarium);
 
 
-/*********** end: mr-aquarium entity ***********/
+    /*********** end: mr-aquarium entity ***********/
 
     /*********** begin: mr-water entity ***********/
 
     class MRWater extends MREntity {
 
-    constructor() {
-        super()
+        constructor() {
+            super()
 
-        const params = {
-            color: '#00ccff',
-            scale: 0.25,
-            flowX: 0.5,
-            flowY: 0.5
-        };
+            const params = {
+                color: '#00ccff',
+                scale: 0.25,
+                flowX: 0.5,
+                flowY: 0.5
+            };
 
-        const waterGeometry = new THREE.PlaneGeometry(0.9, 0.9);
-        this.water = new Water(waterGeometry, {
-            color: params.color,
-            scale: params.scale,
-            flowDirection: new THREE.Vector2( params.flowX, params.flowY ),
-            normalMap0: new THREE.TextureLoader().load('./assets/Water_1_M_Normal.jpg'),
-            normalMap1: new THREE.TextureLoader().load('./assets/Water_2_M_Normal.jpg'),
-            textureWidth: 1024,
-            textureHeight: 1024
-        });
+            const waterGeometry = new THREE.PlaneGeometry(0.9, 0.9);
+            this.water = new Water(waterGeometry, {
+                color: params.color,
+                scale: params.scale,
+                flowDirection: new THREE.Vector2(params.flowX, params.flowY),
+                normalMap0: new THREE.TextureLoader().load('./assets/Water_1_M_Normal.jpg'),
+                normalMap1: new THREE.TextureLoader().load('./assets/Water_2_M_Normal.jpg'),
+                textureWidth: 1024,
+                textureHeight: 1024
+            });
 
-        this.water.material.clipping = true;
-        this.object3D.add(this.water);
+            this.water.material.clipping = true;
+            this.object3D.add(this.water);
 
+        }
     }
-}
 
-customElements.get('mr-water') || customElements.define('mr-water', MRWater);
+    customElements.get('mr-water') || customElements.define('mr-water', MRWater);
 
 
-/*********** end: mr-water entity ***********/
+    /*********** end: mr-water entity ***********/
 
-/*********** start: mr.js app code ***********/
+    /*********** start: mr.js app code ***********/
 
 
     let volume = document.getElementById('volume')
@@ -150,21 +146,25 @@ customElements.get('mr-water') || customElements.define('mr-water', MRWater);
     let worldPosition = new THREE.Vector3()
 
     function toggleMR() {
-        if(!mrjsUtils.xr.isPresenting) { return }
+        if (!mrjsUtils.xr.isPresenting) {
+            return
+        }
 
         wall.object3D.visible = false
         ceiling.object3D.visible = false
-        wall.components.set('anchor', {occlusion : false})
+        wall.components.set('anchor', {
+            occlusion: false
+        })
 
         volume.object3D.visible = !volume.object3D.visible
 
-        if(volume.object3D.visible) {
+        if (volume.object3D.visible) {
             let y = volume.plane.dimensions.x < volume.plane.dimensions.z ? volume.plane.dimensions.x : volume.plane.dimensions.z
             y -= 0.2
             panel.object3D.position.setY(y)
         } else {
-            panel.object3D.position.copy(new THREE.Vector3(0,0,0))
-            panel.object3D.quaternion.copy(new THREE.Quaternion(0,0,0,1))
+            panel.object3D.position.copy(new THREE.Vector3(0, 0, 0))
+            panel.object3D.quaternion.copy(new THREE.Quaternion(0, 0, 0, 1))
         }
     }
 
@@ -189,11 +189,15 @@ customElements.get('mr-water') || customElements.define('mr-water', MRWater);
     ceiling.object3D.visible = false
 
     function togglePortal() {
-        if(!mrjsUtils.xr.isPresenting) { return }
+        if (!mrjsUtils.xr.isPresenting) {
+            return
+        }
         volume.object3D.visible = false
         wall.object3D.visible = !wall.object3D.visible
         ceiling.object3D.visible = !ceiling.object3D.visible
-        wall.components.set('anchor', {occlusion : !wall.object3D.visible})
+        wall.components.set('anchor', {
+            occlusion: !wall.object3D.visible
+        })
     }
 
     let water = document.getElementById('water')
@@ -211,10 +215,10 @@ customElements.get('mr-water') || customElements.define('mr-water', MRWater);
         volume.object3D.visible = false
         wall.object3D.visible = false
         ceiling.object3D.visible = false
-        wall.components.set('anchor', {occlusion : false})   
-     })
-
-
+        wall.components.set('anchor', {
+            occlusion: false
+        })
+    })
 </script>
 <script src="script.js"></script>
 

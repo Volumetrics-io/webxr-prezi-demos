@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>2D responsive demo</title>
+    <title>03 Table top</title>
     <script src="../dist/mr.js"></script>
     <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
@@ -39,15 +39,14 @@
             </mr-panel>
         </mr-entity>
 
-            <mr-volume id="volume" data-comp-anchor="type: plane; label: table;">
-                <mr-aquarium id="aquarium"></mr-aquarium>
-                <mr-entity id="aquarium-models"></mr-entity>
-            </mr-volume>
+        <mr-volume id="volume" data-comp-anchor="type: plane; label: table;">
+            <mr-aquarium id="aquarium"></mr-aquarium>
+            <mr-entity id="aquarium-models"></mr-entity>
+        </mr-volume>
     </mr-app>
 </body>
 
 <script>
-
     /*********** begin: mr-aquarium entity ***********/
 
     class MRAquarium extends MREntity {
@@ -63,22 +62,28 @@
             };
 
             const geometry = new THREE.BoxGeometry(0.99, 0.99, 0.99);
-            const material = new THREE.MeshPhongMaterial({color: '#0235ff', side: 2, transparent: true, opacity: 0.2, specular: '#7989c4'})
+            const material = new THREE.MeshPhongMaterial({
+                color: '#0235ff',
+                side: 2,
+                transparent: true,
+                opacity: 0.2,
+                specular: '#7989c4'
+            })
             this.mesh = new THREE.Mesh(geometry, material)
 
             this.object3D.add(this.mesh)
-            
+
             this.mesh.material.clipping = true;
 
         }
     }
 
-customElements.get('mr-aquarium') || customElements.define('mr-aquarium', MRAquarium);
+    customElements.get('mr-aquarium') || customElements.define('mr-aquarium', MRAquarium);
 
 
-/*********** end: mr-aquarium entity ***********/
+    /*********** end: mr-aquarium entity ***********/
 
-/*********** start: mr.js app code ***********/
+    /*********** start: mr.js app code ***********/
 
 
     let volume = document.getElementById('volume')
@@ -90,7 +95,9 @@ customElements.get('mr-aquarium') || customElements.define('mr-aquarium', MRAqua
     let worldPosition = new THREE.Vector3()
 
     function toggleMR() {
-        if(!mrjsUtils.xr.isPresenting) { return }
+        if (!mrjsUtils.xr.isPresenting) {
+            return
+        }
         volume.object3D.visible = !volume.object3D.visible
     }
 
@@ -110,7 +117,6 @@ customElements.get('mr-aquarium') || customElements.define('mr-aquarium', MRAqua
     document.addEventListener('exitXR', (e) => {
         volume.object3D.visible = false
     })
-
 </script>
 <script src="script.js"></script>
 
