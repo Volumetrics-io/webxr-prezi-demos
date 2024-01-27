@@ -95,6 +95,8 @@ mr-app {
     font-family: var(--font-body);
     font-size: 18px;
     font-weight: 400;
+    line-height: 100%;
+    letter-spacing: 1px;
 }
 
 mr-button {
