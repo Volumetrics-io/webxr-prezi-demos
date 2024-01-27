@@ -47,28 +47,6 @@
 </body>
 
 <script>
-    let volume = document.getElementById('volume')
-    let panel = document.getElementById('panel')
-    let xrButton = document.getElementById('xr-button')
-
-    volume.object3D.visible = false
-
-    let worldPosition = new THREE.Vector3()
-
-    function toggleMR() {
-        if(!mrjsUtils.xr.isPresenting) { return }
-        volume.object3D.visible = !volume.object3D.visible
-        if(volume.object3D.visible) {
-            let y = volume.plane.dimensions.x < volume.plane.dimensions.z ? volume.plane.dimensions.x : volume.plane.dimensions.z
-            y -= 0.2
-            panel.object3D.position.setY(y)
-        } else {
-            panel.object3D.position.copy(new THREE.Vector3(0,0,0))
-            panel.object3D.quaternion.copy(new THREE.Quaternion(0,0,0,1))
-        }
-
-        
-    }
 
     /*********** begin: mr-aquarium entity ***********/
 
@@ -93,14 +71,36 @@
             this.mesh.material.clipping = true;
 
         }
-}
+    }
 
 customElements.get('mr-aquarium') || customElements.define('mr-aquarium', MRAquarium);
 
 
 /*********** end: mr-aquarium entity ***********/
 
+/*********** start: mr.js app code ***********/
 
+
+    let volume = document.getElementById('volume')
+    let panel = document.getElementById('panel')
+    let xrButton = document.getElementById('xr-button')
+
+    volume.object3D.visible = false
+
+    let worldPosition = new THREE.Vector3()
+
+    function toggleMR() {
+        if(!mrjsUtils.xr.isPresenting) { return }
+        volume.object3D.visible = !volume.object3D.visible
+        if(volume.object3D.visible) {
+            let y = volume.plane.dimensions.x < volume.plane.dimensions.z ? volume.plane.dimensions.x : volume.plane.dimensions.z
+            y -= 0.2
+            panel.object3D.position.setY(y)
+        } else {
+            panel.object3D.position.copy(new THREE.Vector3(0,0,0))
+            panel.object3D.quaternion.copy(new THREE.Quaternion(0,0,0,1))
+        }
+    }
 
     let aquarium = document.getElementById('aquarium')
 

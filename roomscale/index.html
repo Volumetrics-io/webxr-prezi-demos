@@ -12,12 +12,13 @@
     <mr-app debug="false">
         <mr-light color="blue" intensity="2" data-position="0 0 0.5"></mr-light>
         <mr-light color="orange" intensity="1" data-position="0 1 0.5"></mr-light>
-        <mr-panel class="stack" data-comp-anchor="type: fixed;">
+        <mr-panel id="panel" class="stack" data-comp-anchor="type: fixed;">
 
             <mr-div class="nav">
                 <mr-div style="height: 72px; width: 144px;" onclick="App.spinLogo()">
                     <mr-model id="mrjs-logo" src="./assets/mrjs_logo.glb"></mr-model>
                 </mr-div>
+                <mr-button style="margin-left: auto;" onclick="togglePortal()">submersed</mr-button>
                 <mr-button style="margin-left: auto;" onclick="toggleMR()">MR</mr-button>
                 <mr-button style="margin-left: 10px;" onclick="App.prev()">◁</mr-button>
                 <mr-button style="margin-left: 10px" onclick="App.next()">▷</mr-button>
@@ -38,28 +39,68 @@
         </mr-panel>
 
         <mr-entity id="wall" data-comp-anchor="type: plane; label: wall; ">
-            <mr-skybox src="./assets/ocean.png"></mr-skybox>
-            <mr-water id="aquarium"></mr-water>
+            <mr-water id="water"></mr-water>
             <mr-model 
-                    data-position="0 0.25 0"
-                    style="scale: 2" src="./assets/whale_anim_centered.glb">
+                    data-position="0 0 -15"
+                    src="./assets/hammerhead/hammerhead_circle_swim1.glb">
             </mr-model>
 
+            <mr-model 
+                    data-position="0 0 -0.5"
+                    style="scale: 0.05" 
+                    src="./assets/koi/koifish.glb">
+            </mr-model>
         </mr-entity>
+
+        <mr-entity id="ceiling" data-comp-anchor="type: plane; label: ceiling;">
+            <mr-skybox 
+            data-rotation="90 0 0"
+            src="./assets/ocean.png"></mr-skybox>
+            <mr-model 
+                data-position="0 -0.5 0"
+                src="./assets/whales/whale_circle_2.glb">
+            </mr-model>
+        </mr-entity>
+
+        <mr-volume id="volume" data-comp-anchor="type: plane; label: table;">
+            <mr-aquarium id="aquarium"></mr-aquarium>
+            <mr-entity id="aquarium-models"></mr-entity>
+        </mr-volume>
 
     </mr-app>
 </body>
 
-<script defer>
-    let whale = document.getElementById('wall')
-    let xrButton = document.getElementById('xr-button')
+<script>
 
-    wall.object3D.visible = false
+    /*********** begin: mr-aquarium entity ***********/
 
-    function toggleMR() {
-        wall.object3D.visible = !whale.object3D.visible
-        wall.components.set('anchor', {occlusion: !wall.object3D.visible})
+    class MRAquarium extends MREntity {
+
+        constructor() {
+            super()
+
+            const params = {
+                color: '#00ccff',
+                scale: 0.25,
+                flowX: 0.5,
+                flowY: 0.5
+            };
+
+            const geometry = new THREE.BoxGeometry(0.99, 0.99, 0.99);
+            const material = new THREE.MeshPhongMaterial({color: '#0235ff', side: 2, transparent: true, opacity: 0.2, specular: '#7989c4'})
+            this.mesh = new THREE.Mesh(geometry, material)
+
+            this.object3D.add(this.mesh)
+            
+            this.mesh.material.clipping = true;
+
+        }
     }
+
+customElements.get('mr-aquarium') || customElements.define('mr-aquarium', MRAquarium);
+
+
+/*********** end: mr-aquarium entity ***********/
 
     /*********** begin: mr-water entity ***********/
 
@@ -97,15 +138,79 @@ customElements.get('mr-water') || customElements.define('mr-water', MRWater);
 
 /*********** end: mr-water entity ***********/
 
+/*********** start: mr.js app code ***********/
+
+
+    let volume = document.getElementById('volume')
+    let panel = document.getElementById('panel')
+    let xrButton = document.getElementById('xr-button')
+
+    volume.object3D.visible = false
+
+    let worldPosition = new THREE.Vector3()
+
+    function toggleMR() {
+        if(!mrjsUtils.xr.isPresenting) { return }
+
+        wall.object3D.visible = false
+        ceiling.object3D.visible = false
+        wall.components.set('anchor', {occlusion : false})
+
+        volume.object3D.visible = !volume.object3D.visible
+
+        if(volume.object3D.visible) {
+            let y = volume.plane.dimensions.x < volume.plane.dimensions.z ? volume.plane.dimensions.x : volume.plane.dimensions.z
+            y -= 0.2
+            panel.object3D.position.setY(y)
+        } else {
+            panel.object3D.position.copy(new THREE.Vector3(0,0,0))
+            panel.object3D.quaternion.copy(new THREE.Quaternion(0,0,0,1))
+        }
+    }
 
     let aquarium = document.getElementById('aquarium')
 
     document.addEventListener('anchored', (e) => {
 
         if (e.target == aquarium.parentElement && e.target.plane) {
+            let width = e.target.plane.dimensions.x - 0.01
+            let depth = e.target.plane.dimensions.z - 0.01
+            let height = width > depth ? width : depth
+            height /= 1.5
+            aquarium.mesh.geometry.copy(new THREE.BoxGeometry(width, height, depth))
+        }
+    })
+
+    document.addEventListener('exitXR', (e) => {
+        volume.object3D.visible = false
+        panel.object3D.position.copy(new THREE.Vector3(0,0,0))
+        panel.object3D.quaternion.copy(new THREE.Quaternion(0,0,0,1))
+
+    })
+
+
+    let wall = document.getElementById('wall')
+    let ceiling = document.getElementById('ceiling')
+
+    wall.object3D.visible = false
+    ceiling.object3D.visible = false
+
+    function togglePortal() {
+        if(!mrjsUtils.xr.isPresenting) { return }
+        volume.object3D.visible = false
+        wall.object3D.visible = !wall.object3D.visible
+        ceiling.object3D.visible = !ceiling.object3D.visible
+        wall.components.set('anchor', {occlusion : !wall.object3D.visible})
+    }
+
+    let water = document.getElementById('water')
+
+    document.addEventListener('anchored', (e) => {
+
+        if (e.target == water.parentElement && e.target.plane) {
             let width = e.target.plane.dimensions.x
             let depth = e.target.plane.dimensions.z
-            aquarium.water.geometry.copy(new THREE.PlaneGeometry(width, depth))
+            water.water.geometry.copy(new THREE.PlaneGeometry(width, depth))
         }
     })
 
