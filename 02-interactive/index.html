@@ -9,8 +9,7 @@
 </head>
 
 <body>
-    <mr-app>
-    <!-- <mr-app> -->
+    <mr-app debug="true">
         <mr-light color="blue" intensity="2" data-position="0 0 0.5"></mr-light>
         <mr-light color="orange" intensity="1" data-position="0 1 0.5"></mr-light>
         <mr-panel class="stack" data-comp-anchor="type: fixed;">
@@ -21,23 +20,20 @@
                 </mr-div>
                 <mr-button style="margin-left: auto;" onclick="App.prev()">◁</mr-button>
                 <mr-button style="margin-left: 10px" onclick="App.next()">▷</mr-button>
-                <!-- <mr-button style="margin-left: 10px" onclick="App.toggleDebug()">Debug</mr-button> -->
             </mr-div>
 
             <mr-div class="illustration">
                 <mr-div id="models" style="z-index: 100"></mr-div>
             </mr-div>
 
-            <!-- <mr-div>
-                <mr-model src="./assets/whale.glb"
-                    position="0 -0.1 0"
-                    rotation="-90 0 0"></mr-model>
-            </mr-div> -->
-
             <mr-div class="information">
                 <mr-div class="tight-stack">
                     <mr-text id="name">loading</mr-text>
-                    <mr-text id="order">loading</mr-text>
+                    <mr-a id="link">loading</mr-a>
+                    <mr-div style="display: flex; flex-flow: row nowrap;">
+                        <mr-text>Order of </mr-text>
+                        <mr-text id="order">loading</mr-text>
+                    </mr-div>
                 </mr-div>
                 <mr-text id="desc">loading</mr-text>
             </mr-div>
