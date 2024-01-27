@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>2D responsive demo</title>
+    <script src="../dist/mr.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+    <mr-app id="app" debug="false">
+        <mr-light color="blue" intensity="2" data-position="0 0 0.5"></mr-light>
+        <mr-light color="orange" intensity="1" data-position="0 1 0.5"></mr-light>
+        <mr-entity data-comp-anchor="type: fixed;">
+            <mr-panel id="panel" class="stack">
+
+                <mr-div class="nav">
+                    <mr-div style="height: 72px; width: 144px;" onclick="App.spinLogo()">
+                        <mr-model id="mrjs-logo" src="./assets/mrjs_logo.glb"></mr-model>
+                    </mr-div>
+                    <mr-button style="margin-left: auto;" onclick="toggleMR()">MR</mr-button>
+                    <mr-button style="margin-left: 10px;" onclick="App.prev()">◁</mr-button>
+                    <mr-button style="margin-left: 10px" onclick="App.next()">▷</mr-button>
+                </mr-div>
+
+                <mr-div class="illustration">
+                    <mr-div id="models" style="z-index: 100"></mr-div>
+                </mr-div>
+
+                <mr-div class="information">
+                    <mr-div class="tight-stack">
+                        <mr-text id="name">loading</mr-text>
+                        <mr-text id="order">loading</mr-text>
+                    </mr-div>
+                    <mr-text id="desc">loading</mr-text>
+                </mr-div>
+
+            </mr-panel>
+        </mr-entity>
+
+            <mr-volume id="volume" data-comp-anchor="type: plane; label: table;">
+                <mr-aquarium id="aquarium"></mr-aquarium>
+                <mr-entity id="aquarium-models"></mr-entity>
+            </mr-volume>
+    </mr-app>
+</body>
+
+<script>
+
+    /*********** begin: mr-aquarium entity ***********/
+
+    class MRAquarium extends MREntity {
+
+        constructor() {
+            super()
+
+            const params = {
+                color: '#00ccff',
+                scale: 0.25,
+                flowX: 0.5,
+                flowY: 0.5
+            };
+
+            const geometry = new THREE.BoxGeometry(0.99, 0.99, 0.99);
+            const material = new THREE.MeshPhongMaterial({color: '#0235ff', side: 2, transparent: true, opacity: 0.2, specular: '#7989c4'})
+            this.mesh = new THREE.Mesh(geometry, material)
+
+            this.object3D.add(this.mesh)
+            
+            this.mesh.material.clipping = true;
+
+        }
+    }
+
+customElements.get('mr-aquarium') || customElements.define('mr-aquarium', MRAquarium);
+
+
+/*********** end: mr-aquarium entity ***********/
+
+/*********** start: mr.js app code ***********/
+
+
+    let volume = document.getElementById('volume')
+    let panel = document.getElementById('panel')
+    let xrButton = document.getElementById('xr-button')
+
+    volume.object3D.visible = false
+
+    let worldPosition = new THREE.Vector3()
+
+    function toggleMR() {
+        if(!mrjsUtils.xr.isPresenting) { return }
+        volume.object3D.visible = !volume.object3D.visible
+    }
+
+    let aquarium = document.getElementById('aquarium')
+
+    document.addEventListener('anchored', (e) => {
+
+        if (e.target == aquarium.parentElement && e.target.plane) {
+            let width = e.target.plane.dimensions.x - 0.01
+            let depth = e.target.plane.dimensions.z - 0.01
+            let height = width > depth ? width : depth
+            height /= 1.5
+            aquarium.mesh.geometry.copy(new THREE.BoxGeometry(width, height, depth))
+        }
+    })
+
+    document.addEventListener('exitXR', (e) => {
+        volume.object3D.visible = false
+    })
+
+</script>
+<script src="script.js"></script>
+
+
+</html>
