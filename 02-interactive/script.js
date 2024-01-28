@@ -81,17 +81,6 @@ var __appState = {
             }, 16)
             this.isLogoAnimating = true;
         }
-    },
-    toggleDebug: function() {
-        if (this.debugToggle) {
-            document.querySelector("mr-app").removeAttribute("debug");
-            this.debugToggle = false;
-        } else {
-            document.querySelector("mr-app").setAttribute("debug", true);
-            this.debugToggle = true;
-        }
-        console.log(document.querySelector("mr-app"));
-        console.log(this.debugToggle);
     }
 }
 
