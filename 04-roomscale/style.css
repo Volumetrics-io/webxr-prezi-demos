@@ -21,6 +21,10 @@ mr-app {
     color: #181818;
 }
 
+mr-panel {
+    height: 100vh;
+}
+
 .nav {
     --space-around: 20px;
     --height: 72px;
