@@ -7,7 +7,9 @@ var __appState = {
             name: "Koi fish",
             order: "Cypriniformes",
             model: 'koi/koifish.glb',
+            animation: {clip: 1, action: 'play'},
             volumeModel: 'koi/koifish_swim_circle.glb',
+            vAnimation: {clip: 0, action: 'play'},
             scale: 0.05,
             scale2: 0.025,
             rotation: "0 0 0",
@@ -19,7 +21,9 @@ var __appState = {
             name: "Hammerhead Shark",
             order: "Carcharhiniformes",
             model: 'hammerhead/great_hammerhead_shark.glb',
+            animation: {clip: 0, action: 'play'},
             volumeModel: 'hammerhead/hammerhead_circle_swim1.glb',
+            vAnimation: {clip: 0, action: 'play'},
             scale: 0.15,
             scale2: 0.06,
             rotation: "0 90 0",
@@ -31,7 +35,9 @@ var __appState = {
             name: "Blue Whale",
             order: "Artiodactyla",
             model: 'whales/blue_whale.glb',
+            animation: {clip: 0, action: 'play'},
             volumeModel: 'whales/whale_circle_2.glb',
+            vAnimation: {clip: 0, action: 'play'},
             scale: 0.0005,
             scale2: 0.045,
             rotation: "0 90 360",
@@ -144,6 +150,15 @@ App.fishes.forEach(fish => {
 
     document.querySelector("#models").append(model);
     document.querySelector("#aquarium-models").append(volumeModel);
+
+    model.onLoad = () => {
+        model.components.set('animation', fish.animation)
+    }
+
+    volumeModel.onLoad = () => {
+        console.log(volumeModel.animations);
+        volumeModel.components.set('animation', fish.vAnimation)
+    }
 });
 
 document.addEventListener('DOMContentLoaded', function () {

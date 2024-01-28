@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <mr-app id="app" debug="false">
+    <mr-app id="app">
         <mr-light color="blue" intensity="2" data-position="0 0 0.5"></mr-light>
         <mr-light color="orange" intensity="1" data-position="0 1 0.5"></mr-light>
         <mr-entity data-comp-anchor="type: fixed;">
@@ -39,10 +39,13 @@
             </mr-panel>
         </mr-entity>
 
-        <mr-volume id="volume" data-comp-anchor="type: plane; label: table;">
+        <mr-volume 
+            id="volume" 
+            data-comp-anchor="type: plane; label: table;">
             <mr-aquarium id="aquarium"></mr-aquarium>
             <mr-entity id="aquarium-models"></mr-entity>
         </mr-volume>
+
     </mr-app>
 </body>
 
@@ -54,31 +57,22 @@
         constructor() {
             super()
 
-            const params = {
-                color: '#00ccff',
-                scale: 0.25,
-                flowX: 0.5,
-                flowY: 0.5
-            };
-
             const geometry = new THREE.BoxGeometry(0.99, 0.99, 0.99);
             const material = new THREE.MeshPhongMaterial({
                 color: '#0235ff',
                 side: 2,
                 transparent: true,
                 opacity: 0.2,
-                specular: '#7989c4'
+                specular: '#7989c4',
+                clipping: true
             })
+
             this.mesh = new THREE.Mesh(geometry, material)
-
             this.object3D.add(this.mesh)
-
-            this.mesh.material.clipping = true;
-
         }
     }
 
-    customElements.get('mr-aquarium') || customElements.define('mr-aquarium', MRAquarium);
+    customElements.define('mr-aquarium', MRAquarium);
 
 
     /*********** end: mr-aquarium entity ***********/

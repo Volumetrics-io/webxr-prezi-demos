@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <mr-app debug="false">
+    <mr-app>
         <mr-light color="blue" intensity="2" data-position="0 0 0.5"></mr-light>
         <mr-light color="orange" intensity="1" data-position="0 1 0.5"></mr-light>
         <mr-panel id="panel" class="stack" data-comp-anchor="type: fixed;">
@@ -40,16 +40,33 @@
 
         <mr-entity id="wall" data-comp-anchor="type: plane; label: wall; ">
             <mr-water id="water"></mr-water>
-            <mr-model data-position="0 0 -15" src="./assets/hammerhead/hammerhead_circle_swim1.glb">
+            <mr-model 
+            data-position="0 0 -15" 
+            data-comp-animation="clip: 0; action: play;"
+            src="./assets/hammerhead/hammerhead_circle_swim1.glb">
             </mr-model>
 
-            <mr-model data-position="0 0 -0.5" style="scale: 0.05" src="./assets/koi/koifish.glb">
+            <mr-entity id="whalesounds" 
+                        data-comp-audio="src: ./assets/whales/audio/whale_sounds.mp3; loop: true;"
+                        data-position="0 0 -10"></mr-entity>
+
+            <mr-model 
+                    data-position="0 0 -0.5"
+                    style="scale: 0.05" 
+                    data-comp-animation="clip: 1; action: play;"
+                    src="./assets/koi/koifish.glb">
             </mr-model>
         </mr-entity>
 
         <mr-entity id="ceiling" data-comp-anchor="type: plane; label: ceiling;">
-            <mr-skybox data-rotation="90 0 0" src="./assets/ocean.png"></mr-skybox>
-            <mr-model data-position="0 -0.5 0" src="./assets/whales/whale_circle_2.glb">
+            <mr-skybox 
+            data-rotation="0 0 0"
+            src="./assets/ocean.png"></mr-skybox>
+            <mr-model 
+                id="whale"
+                data-position="-6 -2.7 -1"
+                data-comp-animation="clip: 0;"
+                src="./assets/whales/whale_circle_2.glb">
             </mr-model>
         </mr-entity>
 
@@ -134,16 +151,14 @@
 
     /*********** end: mr-water entity ***********/
 
-    /*********** start: mr.js app code ***********/
+/*********** start: tabletop MR example app code ***********/
 
 
     let volume = document.getElementById('volume')
-    let panel = document.getElementById('panel')
     let xrButton = document.getElementById('xr-button')
 
     volume.object3D.visible = false
 
-    let worldPosition = new THREE.Vector3()
 
     function toggleMR() {
         if (!mrjsUtils.xr.isPresenting) {
@@ -157,15 +172,6 @@
         })
 
         volume.object3D.visible = !volume.object3D.visible
-
-        if (volume.object3D.visible) {
-            let y = volume.plane.dimensions.x < volume.plane.dimensions.z ? volume.plane.dimensions.x : volume.plane.dimensions.z
-            y -= 0.2
-            panel.object3D.position.setY(y)
-        } else {
-            panel.object3D.position.copy(new THREE.Vector3(0, 0, 0))
-            panel.object3D.quaternion.copy(new THREE.Quaternion(0, 0, 0, 1))
-        }
     }
 
     let aquarium = document.getElementById('aquarium')
@@ -181,12 +187,21 @@
         }
     })
 
+    /*********** end: tabletop MR example app code ***********/
+
+    /*********** start: roomscale MR example app code ***********/
+
 
     let wall = document.getElementById('wall')
     let ceiling = document.getElementById('ceiling')
 
     wall.object3D.visible = false
     ceiling.object3D.visible = false
+
+    let whalesounds = document.getElementById('whalesounds')
+    let whale = document.getElementById('whale')
+    let play = false
+
 
     function togglePortal() {
         if (!mrjsUtils.xr.isPresenting) {
@@ -195,9 +210,12 @@
         volume.object3D.visible = false
         wall.object3D.visible = !wall.object3D.visible
         ceiling.object3D.visible = !ceiling.object3D.visible
-        wall.components.set('anchor', {
-            occlusion: !wall.object3D.visible
-        })
+        wall.components.set('anchor', {occlusion : !wall.object3D.visible})
+
+        play = !play
+
+        whalesounds.components.set('audio', {state: play ? 'play' : 'stop'})
+        whale.components.set('animation', {action: play ? 'play' : 'stop'})
     }
 
     let water = document.getElementById('water')
@@ -215,10 +233,15 @@
         volume.object3D.visible = false
         wall.object3D.visible = false
         ceiling.object3D.visible = false
-        wall.components.set('anchor', {
-            occlusion: false
-        })
-    })
+        wall.components.set('anchor', {occlusion : false})   
+
+        play = false
+        whalesounds.components.set('audio', {state: play ? 'play' : 'stop'})
+        whale.components.set('animation', {action: play ? 'play' : 'stop'})
+
+     })
+
+
 </script>
 <script src="script.js"></script>
 
