@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <mr-app debug="false">
+    <mr-app>
         <mr-light color="blue" intensity="2" data-position="0 0 0.5"></mr-light>
         <mr-light color="orange" intensity="1" data-position="0 1 0.5"></mr-light>
         <mr-panel id="panel" class="stack" data-comp-anchor="type: fixed;">
@@ -235,8 +235,10 @@
         ceiling.object3D.visible = false
         wall.components.set('anchor', {occlusion : false})   
 
-        play = !play
+        play = false
         whalesounds.components.set('audio', {state: play ? 'play' : 'stop'})
+        whale.components.set('animation', {action: play ? 'play' : 'stop'})
+
      })
 
 
