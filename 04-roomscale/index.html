@@ -41,9 +41,9 @@
         <mr-entity id="wall" data-comp-anchor="type: plane; label: wall; ">
             <mr-water id="water"></mr-water>
             <mr-model 
-            data-position="0 0 -15" 
-            data-comp-animation="clip: 0; action: play;"
-            src="./assets/hammerhead/hammerhead_circle_swim1.glb">
+                data-position="0 0 -15" 
+                data-comp-animation="clip: 0; action: play;"
+                src="./assets/hammerhead/hammerhead_circle_swim1.glb">
             </mr-model>
 
             <mr-entity id="whalesounds" 
@@ -146,7 +146,7 @@
         }
     }
 
-    customElements.get('mr-water') || customElements.define('mr-water', MRWater);
+    customElements.define('mr-water', MRWater);
 
 
     /*********** end: mr-water entity ***********/
@@ -207,13 +207,14 @@
         if (!mrjsUtils.xr.isPresenting) {
             return
         }
-        volume.object3D.visible = false
-        wall.object3D.visible = !wall.object3D.visible
-        ceiling.object3D.visible = !ceiling.object3D.visible
-        wall.components.set('anchor', {occlusion : !wall.object3D.visible})
 
         play = !play
 
+        volume.object3D.visible  = false
+        wall.object3D.visible    = !wall.object3D.visible
+        ceiling.object3D.visible = !ceiling.object3D.visible
+
+        wall.components.set('anchor', {occlusion : !wall.object3D.visible})
         whalesounds.components.set('audio', {state: play ? 'play' : 'stop'})
         whale.components.set('animation', {action: play ? 'play' : 'stop'})
     }
