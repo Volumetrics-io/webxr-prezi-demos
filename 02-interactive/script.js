@@ -6,6 +6,7 @@ var __appState = {
             name: "Koi fish",
             order: "Cypriniformes",
             model: 'koifish.glb',
+            animation: {clip: 1, action: 'play'},
             link: 'https://en.wikipedia.org/wiki/Koi',
             scale: 0.05,
             rotation: "0 0 0",
@@ -16,6 +17,7 @@ var __appState = {
             name: "Hammerhead Shark",
             order: "Carcharhiniformes",
             model: 'great_hammerhead_shark.glb',
+            animation: {clip: 0, action: 'play'},
             link: 'https://en.wikipedia.org/wiki/Hammerhead_shark',
             scale: 0.15,
             rotation: "0 90 0",
@@ -26,6 +28,7 @@ var __appState = {
             name: "Blue Whale",
             order: "Artiodactyla",
             model: 'blue_whale.glb',
+            animation: {clip: 0, action: 'play'},
             link: 'https://en.wikipedia.org/wiki/Blue_whale',
             scale: 0.0005,
             rotation: "0 90 360",
@@ -111,6 +114,10 @@ App.fishes.forEach(fish => {
     model.dataset.name = fish.name;
     model.dataset.rotation = fish.rotation;
     model.dataset.position = fish.position;
+
+    model.onLoad = () => {
+        model.components.set('animation', fish.animation)
+    }
 
     Object.assign(model.style, {
         scale: fish.scale

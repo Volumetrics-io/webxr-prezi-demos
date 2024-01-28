@@ -40,7 +40,10 @@
 
         <mr-entity id="wall" data-comp-anchor="type: plane; label: wall; ">
             <mr-water id="water"></mr-water>
-            <mr-model data-position="0 0 -15" src="./assets/hammerhead/hammerhead_circle_swim1.glb">
+            <mr-model 
+            data-position="0 0 -15" 
+            data-comp-animation="clip: 0; action: play;"
+            src="./assets/hammerhead/hammerhead_circle_swim1.glb">
             </mr-model>
 
             <mr-entity id="whalesounds" 
@@ -50,6 +53,7 @@
             <mr-model 
                     data-position="0 0 -0.5"
                     style="scale: 0.05" 
+                    data-comp-animation="clip: 1; action: play;"
                     src="./assets/koi/koifish.glb">
             </mr-model>
         </mr-entity>
@@ -59,7 +63,9 @@
             data-rotation="0 0 0"
             src="./assets/ocean.png"></mr-skybox>
             <mr-model 
+                id="whale"
                 data-position="-6 -2.7 -1"
+                data-comp-animation="clip: 0;"
                 src="./assets/whales/whale_circle_2.glb">
             </mr-model>
         </mr-entity>
@@ -193,7 +199,8 @@
     ceiling.object3D.visible = false
 
     let whalesounds = document.getElementById('whalesounds')
-    let playindsound = false
+    let whale = document.getElementById('whale')
+    let play = false
 
 
     function togglePortal() {
@@ -205,9 +212,10 @@
         ceiling.object3D.visible = !ceiling.object3D.visible
         wall.components.set('anchor', {occlusion : !wall.object3D.visible})
 
-        playindsound = !playindsound
+        play = !play
 
-        whalesounds.components.set('audio', {state: playindsound ? 'play' : 'stop'})
+        whalesounds.components.set('audio', {state: play ? 'play' : 'stop'})
+        whale.components.set('animation', {action: play ? 'play' : 'stop'})
     }
 
     let water = document.getElementById('water')
@@ -227,8 +235,8 @@
         ceiling.object3D.visible = false
         wall.components.set('anchor', {occlusion : false})   
 
-        playindsound = !playindsound
-        whalesounds.components.set('audio', {state: playindsound ? 'play' : 'stop'})
+        play = !play
+        whalesounds.components.set('audio', {state: play ? 'play' : 'stop'})
      })
 
 
