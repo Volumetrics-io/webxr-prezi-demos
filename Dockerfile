@@ -4,7 +4,6 @@ FROM node:lts-bullseye
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update -qqy && apt upgrade -qqy
-COPY . /app
 RUN npm install -g http-server
 WORKDIR /app
 ENTRYPOINT ["http-server", "-S", "-C", "cert.pem", "-K", "key.pem", "-o"]
