@@ -27,7 +27,7 @@ openssl req -x509 -newkey rsa:2048 -passout pass:<WRITE YOUR PASSWORD> -keyout k
 
 Pass your project as a mount volume, add environment variable `NODE_HTTP_SERVER_SSL_PASSPHRASE` with your password:
 ```
-docker run -it --rm -p 443:8080 -e NODE_HTTP_SERVER_SSL_PASSPHRASE=<pass> -v /Users/dgusev/Projects/web/webxr-prezi-demos:/app --name mrjs --hostname mrjs mrjs:example
+docker run -it --rm -p 443:8080 -e NODE_HTTP_SERVER_SSL_PASSPHRASE=<pass> -v /path/to/your/webxr-prezi-demos:/app --name mrjs --hostname mrjs mrjs:example
 ```
 
 Open web page:
